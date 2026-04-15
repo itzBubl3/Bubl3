@@ -4,6 +4,36 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BUBL3 - Développeur Roblox Expert</title>
+    
+    <!-- Open Graph Meta Tags for Social Media Preview -->
+    <meta property="og:title" content="BUBL3 - Développeur Roblox Expert">
+    <meta property="og:description" content="Développeur Roblox professionnel avec 4 ans d'expérience. Spécialiste en scripts, animations et systèmes anti-triche. Découvrez mes projets et compétences !">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itzbubl3.github.io/Bubl3/">
+    <meta property="og:image" content="https://itzbubl3.github.io/Bubl3/preview-image.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Portfolio BUBL3">
+    <meta property="og:locale" content="fr_FR">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="BUBL3 - Développeur Roblox Expert">
+    <meta name="twitter:description" content="Développeur Roblox professionnel avec 4 ans d'expérience. Spécialiste en scripts, animations et systèmes anti-triche.">
+    <meta name="twitter:image" content="https://itzbubl3.github.io/Bubl3/preview-image.png">
+    <meta name="twitter:creator" content="@BUBL3">
+    
+    <!-- Additional Meta Tags -->
+    <meta name="description" content="Développeur Roblox professionnel avec 4 ans d'expérience. Spécialiste en scripts, animations et systèmes anti-triche. Découvrez mes projets et compétences !">
+    <meta name="keywords" content="développeur roblox, scripteur lua, animateur, anti-cheat, roblox studio, BUBL3, portfolio">
+    <meta name="author" content="BUBL3">
+    <meta name="theme-color" content="#6d28d9">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -748,10 +778,10 @@
                             <div class="feature-item"><i class="fas fa-check"></i><span>Communauté active</span></div>
                             <div class="feature-item"><i class="fas fa-check"></i><span>Support personnalisé</span></div>
                         </div>
-                        <div class="discord-button" data-copy="itzbubl3">
+                        <a href="https://discord.gg/AQCw7EhkqQ" target="_blank" class="discord-button">
                             <i class="fab fa-discord"></i>
                             <span>Rejoindre le Serveur</span>
-                        </div>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -900,7 +930,9 @@
 
         // ── DISCORD COPY BUTTONS ──
         document.querySelectorAll('.discord-button[data-copy]').forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
                 const text = btn.getAttribute('data-copy');
                 navigator.clipboard.writeText(text).then(() => {
                     const original = btn.innerHTML;
