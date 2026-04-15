@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1200, initial-scale=1.0">
+    <title>Preview Image Generator</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            width: 1200px;
+            height: 630px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .content {
+            display: flex;
+            height: 100%;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .left-section {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .right-section {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .title {
+            font-size: 72px;
+            font-weight: 800;
+            color: #ffffff;
+            margin-bottom: 20px;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+        
+        .subtitle {
+            font-size: 28px;
+            font-weight: 600;
+            color: #8b5cf6;
+            margin-bottom: 30px;
+        }
+        
+        .description {
+            font-size: 18px;
+            color: #a0a0a0;
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 500px;
+        }
+        
+        .skills {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .skill-tag {
+            background: rgba(109, 40, 217, 0.2);
+            color: #c084fc;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .glow {
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(109, 40, 217, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+        }
+        
+        .code-block {
+            background: rgba(26, 26, 26, 0.8);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            width: 400px;
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-header {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+        
+        .dot.red { background: #ff5f56; }
+        .dot.yellow { background: #ffbd2e; }
+        .dot.green { background: #27c93f; }
+        
+        .code-content {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        
+        .keyword { color: #c084fc; }
+        .string { color: #4ade80; }
+        .function { color: #60a5fa; }
+        .comment { color: #6b7280; }
+        
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #8b5cf6;
+            border-radius: 50%;
+            opacity: 0.6;
+        }
+        
+        .particle:nth-child(1) { top: 20%; left: 10%; }
+        .particle:nth-child(2) { top: 30%; left: 85%; }
+        .particle:nth-child(3) { top: 70%; left: 15%; }
+        .particle:nth-child(4) { top: 80%; left: 80%; }
+        .particle:nth-child(5) { top: 50%; left: 45%; }
+        .particle:nth-child(6) { top: 15%; left: 60%; }
+        .particle:nth-child(7) { top: 85%; left: 30%; }
+        .particle:nth-child(8) { top: 40%; left: 70%; }
+    </style>
+</head>
+<body>
+    <div class="particles">
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+        <div class="particle"></div>
+    </div>
+    
+    <div class="glow"></div>
+    
+    <div class="content">
+        <div class="left-section">
+            <h1 class="title">BUBL3</h1>
+            <h2 class="subtitle">Développeur Roblox Expert</h2>
+            <p class="description">
+                4 ans d'expérience en développement Roblox. Spécialiste en scripts Lua, animations fluides et systèmes anti-triche avancés.
+            </p>
+            <div class="skills">
+                <span class="skill-tag">Lua Scripting</span>
+                <span class="skill-tag">Animations</span>
+                <span class="skill-tag">Anti-Cheat</span>
+                <span class="skill-tag">UI Design</span>
+            </div>
+        </div>
+        
+        <div class="right-section">
+            <div class="code-block">
+                <div class="code-header">
+                    <div class="dot red"></div>
+                    <div class="dot yellow"></div>
+                    <div class="dot green"></div>
+                </div>
+                <div class="code-content">
+                    <span class="comment">-- Advanced Combat System</span><br>
+                    <span class="keyword">local</span> <span class="function">CombatSystem</span> = {}<br>
+                    <br>
+                    <span class="keyword">function</span> <span class="function">CombatSystem</span>.<span class="function">Initialize</span>()<br>
+                    &nbsp;&nbsp;<span class="keyword">local</span> skills = {<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;[<span class="string">"sword"</span>] = <span class="keyword">true</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;[<span class="string">"magic"</span>] = <span class="keyword">true</span>,<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;[<span class="string">"defense"</span>] = <span class="keyword">true</span><br>
+                    &nbsp;&nbsp;}<br>
+                    &nbsp;&nbsp;<span class="keyword">return</span> skills<br>
+                    <span class="keyword">end</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

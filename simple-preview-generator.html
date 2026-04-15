@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'Image de Prévisualisation</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .preview-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        #previewCanvas {
+            border: 2px solid #333;
+            border-radius: 10px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        .controls {
+            margin: 20px 0;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #6d28d9, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 0 10px;
+            transition: transform 0.2s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .info {
+            background: rgba(109, 40, 217, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <h1>Générateur d'Image de Prévisualisation pour Réseaux Sociaux</h1>
+        
+        <div class="info">
+            <p>Cet outil va générer une image de 1200x630px optimisée pour Discord, Twitter et autres réseaux sociaux.</p>
+            <p>L'image sera utilisée quand vous partagez votre lien : <strong>https://itzbubl3.github.io/Bubl3/</strong></p>
+        </div>
+        
+        <canvas id="previewCanvas" width="1200" height="630"></canvas>
+        
+        <div class="controls">
+            <button class="btn" onclick="generateImage()">Générer l'Image</button>
+            <button class="btn" onclick="downloadImage()">Télécharger</button>
+        </div>
+        
+        <div class="info">
+            <h3>Instructions :</h3>
+            <ol>
+                <li>Cliquez sur "Générer l'Image" pour créer la prévisualisation</li>
+                <li>Cliquez sur "Télécharger" pour sauvegarder l'image</li>
+                <li>Uploadez l'image sur votre site GitHub Pages</li>
+                <li>Le nom de fichier doit être : <strong>preview-image.png</strong></li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function generateImage() {
+            const canvas = document.getElementById('previewCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Effacer le canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Fond dégradé
+            const gradient = ctx.createLinearGradient(0, 0, 1200, 630);
+            gradient.addColorStop(0, '#000000');
+            gradient.addColorStop(0.5, '#1a1a1a');
+            gradient.addColorStop(1, '#000000');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Glow subtil en arrière-plan
+            const glowGradient = ctx.createRadialGradient(600, 315, 0, 600, 315, 300);
+            glowGradient.addColorStop(0, 'rgba(109, 40, 217, 0.15)');
+            glowGradient.addColorStop(1, 'transparent');
+            ctx.fillStyle = glowGradient;
+            ctx.fillRect(0, 0, 1200, 630);
+            
+            // Particules décoratives
+            ctx.fillStyle = 'rgba(139, 92, 246, 0.6)';
+            const particles = [
+                {x: 120, y: 126}, {x: 1020, y: 189}, {x: 180, y: 441}, 
+                {x: 960, y: 504}, {x: 540, y: 315}, {x: 720, y: 95},
+                {x: 360, y: 535}, {x: 840, y: 252}
+            ];
+            
+            particles.forEach(p => {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Section gauche - Texte
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 72px Inter';
+            ctx.fillText('BUBL3', 100, 250);
+            
+            ctx.fillStyle = '#8b5cf6';
+            ctx.font = '600 28px Inter';
+            ctx.fillText('Développeur Roblox Expert', 100, 320);
+            
+            ctx.fillStyle = '#a0a0a0';
+            ctx.font = '18px Inter';
+            const description = '4 ans d\'expérience en développement Roblox. Spécialiste en scripts Lua, animations fluides et systèmes anti-triche avancés.';
+            wrapText(ctx, description, 100, 380, 500, 25);
+            
+            // Tags de compétences
+            const skills = ['Lua Scripting', 'Animations', 'Anti-Cheat', 'UI Design'];
+            ctx.font = '600 14px Inter';
+            
+            skills.forEach((skill, index) => {
+                const x = 100 + (index * 130);
+                const y = 480;
+                
+                // Background du tag
+                ctx.fillStyle = 'rgba(109, 40, 217, 0.2)';
+                ctx.fillRect(x, y - 20, 120, 32);
+                
+                // Bordure
+                ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y - 20, 120, 32);
+                
+                // Texte
+                ctx.fillStyle = '#c084fc';
+                ctx.fillText(skill, x + 10, y);
+            });
+            
+            // Section droite - Bloc de code
+            const codeBlockX = 700;
+            const codeBlockY = 150;
+            const codeBlockWidth = 400;
+            const codeBlockHeight = 330;
+            
+            // Background du bloc de code
+            ctx.fillStyle = 'rgba(26, 26, 26, 0.8)';
+            ctx.fillRect(codeBlockX, codeBlockY, codeBlockWidth, codeBlockHeight);
+            
+            // Bordure
+            ctx.strokeStyle = 'rgba(139, 92, 246, 0.3)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(codeBlockX, codeBlockY, codeBlockWidth, codeBlockHeight);
+            
+            // Points de la fenêtre
+            const dots = [
+                {x: codeBlockX + 20, y: codeBlockY + 20, color: '#ff5f56'},
+                {x: codeBlockX + 40, y: codeBlockY + 20, color: '#ffbd2e'},
+                {x: codeBlockX + 60, y: codeBlockY + 20, color: '#27c93f'}
+            ];
+            
+            dots.forEach(dot => {
+                ctx.fillStyle = dot.color;
+                ctx.beginPath();
+                ctx.arc(dot.x, dot.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Code
+            ctx.font = '14px Courier New';
+            const codeLines = [
+                {text: '-- Advanced Combat System', color: '#6b7280'},
+                {text: 'local CombatSystem = {}', color: '#ffffff'},
+                {text: '', color: '#ffffff'},
+                {text: 'function CombatSystem.Initialize()', color: '#60a5fa'},
+                {text: '  local skills = {', color: '#ffffff'},
+                {text: '    ["sword"] = true,', color: '#ffffff'},
+                {text: '    ["magic"] = true,', color: '#ffffff'},
+                {text: '    ["defense"] = true', color: '#ffffff'},
+                {text: '  }', color: '#ffffff'},
+                {text: '  return skills', color: '#ffffff'},
+                {text: 'end', color: '#60a5fa'}
+            ];
+            
+            let codeY = codeBlockY + 60;
+            codeLines.forEach(line => {
+                if (line.text) {
+                    ctx.fillStyle = line.color;
+                    ctx.fillText(line.text, codeBlockX + 20, codeY);
+                }
+                codeY += 20;
+            });
+            
+            // Logo/URL en bas
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.font = '14px Inter';
+            ctx.fillText('itzbubl3.github.io/Bubl3/', 100, 580);
+        }
+        
+        function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+            const words = text.split(' ');
+            let line = '';
+            let currentY = y;
+            
+            for (let n = 0; n < words.length; n++) {
+                const testLine = line + words[n] + ' ';
+                const metrics = ctx.measureText(testLine);
+                const testWidth = metrics.width;
+                
+                if (testWidth > maxWidth && n > 0) {
+                    ctx.fillText(line, x, currentY);
+                    line = words[n] + ' ';
+                    currentY += lineHeight;
+                } else {
+                    line = testLine;
+                }
+            }
+            ctx.fillText(line, x, currentY);
+        }
+        
+        function downloadImage() {
+            const canvas = document.getElementById('previewCanvas');
+            const link = document.createElement('a');
+            link.download = 'preview-image.png';
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+        
+        // Générer l'image au chargement
+        window.onload = function() {
+            generateImage();
+        };
+    </script>
+</body>
+</html>
