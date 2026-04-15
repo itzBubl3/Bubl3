@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BUBL3 - Développeur Roblox Expert</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #6d28d9;
+            --secondary-color: #8b5cf6;
+            --accent-color: #c084fc;
+            --dark-bg: #000000;
+            --card-bg: rgba(26, 26, 26, 0.9);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --light-bg: #111111;
+            --border-color: #2a2a2a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ── NAVBAR ── */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            background: rgba(0, 0, 0, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-size: 1.4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 0.5rem;
+            align-items: center;
+        }
+
+        /* FIX: nav-link propre sans effets parasites */
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.95rem;
+            padding: 0.45rem 0.9rem;
+            border-radius: 8px;
+            transition: color 0.2s ease, background 0.2s ease;
+            display: block;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--text-primary);
+            background: rgba(109, 40, 217, 0.15);
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 5px;
+        }
+
+        .hamburger span {
+            width: 24px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: 0.3s;
+            display: block;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+        /* ── HERO ── */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--dark-bg);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Subtle background glow */
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(109, 40, 217, 0.12) 0%, transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            padding: 2rem;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.4rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            letter-spacing: 0.02em;
+        }
+
+        .typing-text {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            color: var(--secondary-color);
+            margin-bottom: 3rem;
+            font-weight: 500;
+            min-height: 1.8rem;
+        }
+
+        .typed-text::after {
+            content: '|';
+            animation: blink 1s step-end infinite;
+            color: var(--accent-color);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1.2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary, .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.9rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            text-decoration: none;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.45);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid rgba(109, 40, 217, 0.6);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            background: rgba(109, 40, 217, 0.1);
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 25px rgba(109, 40, 217, 0.2);
+        }
+
+        /* ── SECTIONS COMMUNES ── */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .title-text {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 700;
+            color: var(--text-primary);
+            display: block;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.01em;
+        }
+
+        .title-underline {
+            width: 50px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            margin: 0 auto;
+            border-radius: 2px;
+        }
+
+        /* ── ABOUT ── */
+        .about {
+            background: var(--light-bg);
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .about-card, .skill-card, .project-card, .contact-card, .server-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            text-align: center;
+            transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .about-card:hover, .skill-card:hover, .project-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(109, 40, 217, 0.4);
+            background: rgba(255, 255, 255, 0.05);
+            box-shadow: 0 12px 30px rgba(109, 40, 217, 0.12);
+        }
+
+        .card-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .about-card:hover .card-icon {
+            transform: scale(1.1);
+            color: var(--secondary-color);
+        }
+
+        .about-card h3, .skill-card h3, .project-card h3, .contact-card h3, .server-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: var(--text-primary);
+        }
+
+        .about-card p, .project-card p, .server-card p, .contact-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* ── SKILLS ── */
+        .skills {
+            background: var(--dark-bg);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .skill-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .skill-card:hover .skill-icon {
+            transform: scale(1.1);
+            color: var(--secondary-color);
+        }
+
+        .skill-level {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .skill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+            width: 0;
+            transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ── PROJECTS ── */
+        .projects {
+            background: var(--light-bg);
+        }
+
+        .projects-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .project-icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease, color 0.3s ease;
+        }
+
+        .project-card:hover .project-icon {
+            transform: scale(1.1);
+            color: var(--secondary-color);
+        }
+
+        .project-tech {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            margin-top: 1.2rem;
+        }
+
+        .tech-tag {
+            background: rgba(109, 40, 217, 0.15);
+            color: var(--accent-color);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(139, 92, 246, 0.25);
+        }
+
+        /* ── DISCORD SERVER ── */
+        .discord-server-section {
+            margin-top: 2rem;
+        }
+
+        .server-card {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 3rem 2.5rem;
+        }
+
+        .server-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(88, 101, 242, 0.4);
+            box-shadow: 0 12px 30px rgba(88, 101, 242, 0.15);
+        }
+
+        .server-icon {
+            font-size: 3.5rem;
+            color: #5865F2;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .server-card:hover .server-icon {
+            transform: scale(1.1);
+        }
+
+        .server-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 0.75rem;
+            margin: 1.5rem 0 2rem;
+            text-align: left;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .feature-item i {
+            color: #5865F2;
+            font-size: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        /* ── DISCORD BUTTON ── */
+        .discord-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #5865F2;
+            color: white;
+            padding: 0.9rem 1.8rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+            border: none;
+            margin-top: 1.5rem;
+            user-select: none;
+        }
+
+        .discord-button:hover {
+            background: #4752c4;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.35);
+        }
+
+        /* ── CONTACT ── */
+        .contact {
+            background: var(--dark-bg);
+        }
+
+        .contact-content {
+            display: flex;
+            justify-content: center;
+        }
+
+        .contact-card {
+            max-width: 480px;
+            width: 100%;
+            padding: 3rem 2.5rem;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(88, 101, 242, 0.4);
+            box-shadow: 0 12px 30px rgba(88, 101, 242, 0.15);
+        }
+
+        .discord-icon {
+            font-size: 3.5rem;
+            color: #5865F2;
+            margin-bottom: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .contact-card:hover .discord-icon {
+            transform: scale(1.1);
+        }
+
+        .discord-tag {
+            color: var(--secondary-color);
+            font-weight: 700;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--dark-bg);
+            padding: 2rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* ── SCROLL REVEAL ── */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ── LOADING ── */
+        .loading {
+            position: fixed;
+            inset: 0;
+            background: var(--dark-bg);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.6s ease;
+        }
+
+        .loading-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(109, 40, 217, 0.2);
+            border-top-color: var(--primary-color);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+                flex-direction: column;
+                position: fixed;
+                top: 60px;
+                left: 0;
+                width: 100%;
+                background: rgba(0, 0, 0, 0.97);
+                padding: 1.5rem;
+                gap: 0.5rem;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .nav-menu.active {
+                display: flex;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content,
+            .skills-grid,
+            .projects-content {
+                grid-template-columns: 1fr;
+            }
+
+            .server-features {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <header>
+        <nav class="navbar" id="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <span class="logo-text">BUBL3</span>
+                </div>
+                <ul class="nav-menu" id="navMenu">
+                    <li><a href="#home" class="nav-link">Accueil</a></li>
+                    <li><a href="#about" class="nav-link">À propos</a></li>
+                    <li><a href="#skills" class="nav-link">Compétences</a></li>
+                    <li><a href="#projects" class="nav-link">Projets</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger" id="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- HERO -->
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="hero-title">BUBL3</h1>
+                <h2 class="hero-subtitle">Développeur Roblox Expert</h2>
+                <div class="typing-text">
+                    <span class="typed-text"></span>
+                </div>
+                <div class="hero-buttons">
+                    <a href="#contact" class="btn-primary">
+                        <i class="fab fa-discord"></i>
+                        Me contacter
+                    </a>
+                    <a href="#skills" class="btn-secondary">
+                        <i class="fas fa-code"></i>
+                        Mes compétences
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ABOUT -->
+        <section id="about" class="about">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-text">À propos de moi</span>
+                    <div class="title-underline"></div>
+                </h2>
+                <div class="about-content">
+                    <div class="about-card reveal">
+                        <div class="card-icon"><i class="fas fa-star"></i></div>
+                        <h3>4 ans d'expérience</h3>
+                        <p>Développeur Roblox professionnel avec 4 ans d'expérience dans la création de jeux et systèmes complexes.</p>
+                    </div>
+                    <div class="about-card reveal">
+                        <div class="card-icon"><i class="fas fa-film"></i></div>
+                        <h3>Animateur Expert</h3>
+                        <p>Spécialisé dans les animations fluides et réalistes pour créer des expériences immersives.</p>
+                    </div>
+                    <div class="about-card reveal">
+                        <div class="card-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Anti-Cheat Avancé</h3>
+                        <p>Développement de systèmes anti-triche robustes pour protéger vos jeux contre les exploitants.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SKILLS -->
+        <section id="skills" class="skills">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-text">Mes Compétences</span>
+                    <div class="title-underline"></div>
+                </h2>
+                <div class="skills-grid">
+                    <div class="skill-card reveal">
+                        <div class="skill-icon"><i class="fab fa-html5"></i></div>
+                        <h3>HTML</h3>
+                        <div class="skill-level"><div class="skill-bar" data-level="90"></div></div>
+                    </div>
+                    <div class="skill-card reveal">
+                        <div class="skill-icon"><i class="fab fa-css3-alt"></i></div>
+                        <h3>CSS</h3>
+                        <div class="skill-level"><div class="skill-bar" data-level="85"></div></div>
+                    </div>
+                    <div class="skill-card reveal">
+                        <div class="skill-icon"><i class="fab fa-python"></i></div>
+                        <h3>Python</h3>
+                        <div class="skill-level"><div class="skill-bar" data-level="80"></div></div>
+                    </div>
+                    <div class="skill-card reveal">
+                        <div class="skill-icon"><i class="fas fa-code"></i></div>
+                        <h3>Lua</h3>
+                        <div class="skill-level"><div class="skill-bar" data-level="95"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROJECTS -->
+        <section id="projects" class="projects">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-text">Mes Projets</span>
+                    <div class="title-underline"></div>
+                </h2>
+                <div class="projects-content">
+                    <div class="project-card reveal">
+                        <div class="project-icon"><i class="fas fa-gamepad"></i></div>
+                        <h3>Système de Combat Avancé</h3>
+                        <p>Système de combat complet avec animations, effets visuels et système de compétences.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Lua</span>
+                            <span class="tech-tag">Roblox Studio</span>
+                        </div>
+                    </div>
+                    <div class="project-card reveal">
+                        <div class="project-icon"><i class="fas fa-shield-alt"></i></div>
+                        <h3>Anti-Cheat Intelligent</h3>
+                        <p>Système anti-triche avancé avec détection automatique et prévention des exploits.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Python</span>
+                            <span class="tech-tag">Machine Learning</span>
+                        </div>
+                    </div>
+                    <div class="project-card reveal">
+                        <div class="project-icon"><i class="fas fa-users"></i></div>
+                        <h3>Système de Factions</h3>
+                        <p>Système de guildes et factions avec territoires, guerres et économie complète.</p>
+                        <div class="project-tech">
+                            <span class="tech-tag">Lua</span>
+                            <span class="tech-tag">Database</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="discord-server-section">
+                    <div class="server-card reveal">
+                        <div class="server-icon"><i class="fab fa-discord"></i></div>
+                        <h3>Rejoignez mon Serveur Discord</h3>
+                        <p>Découvrez tous mes projets en détail, participez aux tests bêta et obtenez un accès exclusif aux nouvelles fonctionnalités !</p>
+                        <div class="server-features">
+                            <div class="feature-item"><i class="fas fa-check"></i><span>Projets exclusifs</span></div>
+                            <div class="feature-item"><i class="fas fa-check"></i><span>Tutoriels et guides</span></div>
+                            <div class="feature-item"><i class="fas fa-check"></i><span>Communauté active</span></div>
+                            <div class="feature-item"><i class="fas fa-check"></i><span>Support personnalisé</span></div>
+                        </div>
+                        <div class="discord-button" data-copy="itzbubl3">
+                            <i class="fab fa-discord"></i>
+                            <span>Rejoindre le Serveur</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CONTACT -->
+        <section id="contact" class="contact">
+            <div class="container">
+                <h2 class="section-title">
+                    <span class="title-text">Contactez-moi</span>
+                    <div class="title-underline"></div>
+                </h2>
+                <div class="contact-content">
+                    <div class="contact-card reveal">
+                        <div class="discord-icon"><i class="fab fa-discord"></i></div>
+                        <h3>Discord</h3>
+                        <h3>Ajoutez-moi : <span class="discord-tag">BUBL3</span></h3>
+                        <p>Envoyez-moi un message pour plus d'informations sur mes services !</p>
+                        <div class="discord-button" data-copy="itzbubl3">
+                            <i class="fab fa-discord"></i>
+                            <span>BUBL3</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container" style="padding: 0;">
+            <p>&copy; 2026 BUBL3 — Tous droits réservés</p>
+        </div>
+    </footer>
+
+    <script>
+        // ── LOADING SCREEN ──
+        window.addEventListener('load', () => {
+            const loading = document.getElementById('loading');
+            setTimeout(() => {
+                loading.style.opacity = '0';
+                setTimeout(() => loading.remove(), 600);
+            }, 800);
+        });
+
+        // ── TYPING EFFECT ──
+        const typingTexts = [
+            "Développeur Roblox depuis 4 ans",
+            "Animateur Expert",
+            "Scripteur Professionnel",
+            "Spécialiste Anti-Cheat",
+            "HTML | CSS | Python | Lua"
+        ];
+
+        let textIndex = 0, charIndex = 0, isDeleting = false;
+
+        function typeText() {
+            const current = typingTexts[textIndex];
+            const el = document.querySelector('.typed-text');
+            if (!el) return;
+
+            if (!isDeleting) {
+                el.textContent = current.substring(0, ++charIndex);
+                if (charIndex === current.length) {
+                    isDeleting = true;
+                    return setTimeout(typeText, 2000);
+                }
+                setTimeout(typeText, 100);
+            } else {
+                el.textContent = current.substring(0, --charIndex);
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    textIndex = (textIndex + 1) % typingTexts.length;
+                    return setTimeout(typeText, 400);
+                }
+                setTimeout(typeText, 50);
+            }
+        }
+
+        // ── SMOOTH SCROLL ──
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                // Close mobile menu if open
+                document.getElementById('navMenu').classList.remove('active');
+                document.getElementById('hamburger').classList.remove('active');
+            });
+        });
+
+        // ── NAVBAR SCROLL ──
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+            updateActiveNav();
+        });
+
+        // ── ACTIVE NAV LINK ──
+        function updateActiveNav() {
+            const sections = document.querySelectorAll('section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            let current = '';
+
+            sections.forEach(section => {
+                if (window.scrollY >= section.offsetTop - 120) current = section.id;
+            });
+
+            navLinks.forEach(link => {
+                link.classList.toggle('active', link.getAttribute('href') === '#' + current);
+            });
+        }
+
+        // ── MOBILE MENU ──
+        document.getElementById('hamburger').addEventListener('click', () => {
+            document.getElementById('navMenu').classList.toggle('active');
+            document.getElementById('hamburger').classList.toggle('active');
+        });
+
+        // ── SCROLL REVEAL ──
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    entry.target.style.transitionDelay = (i * 0.05) + 's';
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+        // ── SKILL BARS ──
+        const skillObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const bar = entry.target;
+                    const level = bar.getAttribute('data-level');
+                    setTimeout(() => { bar.style.width = level + '%'; }, 100);
+                    skillObserver.unobserve(bar);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.skill-bar').forEach(bar => skillObserver.observe(bar));
+
+        // ── DISCORD COPY BUTTONS ──
+        document.querySelectorAll('.discord-button[data-copy]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const text = btn.getAttribute('data-copy');
+                navigator.clipboard.writeText(text).then(() => {
+                    const original = btn.innerHTML;
+                    btn.innerHTML = '<i class="fas fa-check"></i><span>Copié !</span>';
+                    btn.style.background = '#3ba55c';
+                    setTimeout(() => {
+                        btn.innerHTML = original;
+                        btn.style.background = '';
+                    }, 2000);
+                }).catch(() => {
+                    // Fallback si clipboard non disponible
+                    alert('Discord: ' + text);
+                });
+            });
+        });
+
+        // ── INIT ──
+        document.addEventListener('DOMContentLoaded', () => {
+            typeText();
+            updateActiveNav();
+        });
+    </script>
+</body>
+</html>
